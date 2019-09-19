@@ -6,7 +6,7 @@ from mc_scripts import *
 ACTIONS = ['terminal', 'upload-transcript', 'assign-questions']
 
 description = \
-"""Scripts for administrating the MACE COMP system
+    """Scripts for administrating the MACE COMP system
 
 Actions include the following:
 1) upload-transcript
@@ -14,7 +14,7 @@ Actions include the following:
 """
 
 epilog = \
-"""
+    """
 1) upload-transcript
     Action for uploading a transcript to the MaceComp database.
 
@@ -39,19 +39,22 @@ epilog = \
     Action for assigning questions to eligible students
 """
 
-parser = argparse.ArgumentParser(description=description, epilog=epilog, formatter_class=argparse.RawTextHelpFormatter)
-parser.add_argument('-a', '--action', metavar='Action', type=str, default='terminal', help='Action to be performed', choices=ACTIONS)
-parser.add_argument('-f', '--file', metavar='Filepath', type=str, default=None, help='File path of file to be used for specified action')
+parser = argparse.ArgumentParser(
+    description=description, epilog=epilog, formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument('-a', '--action', metavar='Action', type=str,
+                    default='terminal', help='Action to be performed', choices=ACTIONS)
+parser.add_argument('-f', '--file', metavar='Filepath', type=str,
+                    default=None, help='File path of file to be used for specified action')
 args = parser.parse_args()
 
 action = args.action
 
 while action == 'terminal':
     action = input('Specify Action: ').lower()
-    
+
     if action.lower() in {'exit', 'quit', 'stop', 'leave', 'cancel'}:
         exit()
-     
+
     if action not in ACTIONS:
         print('Unrecognized selection')
         print('The options are ', ACTIONS, '\n')
@@ -62,5 +65,3 @@ if action == 'upload-transcript':
 
 if action == 'assign-questions':
     assign_questions()
-
-

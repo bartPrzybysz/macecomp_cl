@@ -1,5 +1,5 @@
 from tkinter import Tk
-from tkinter.filedialog import askopenfilename 
+from tkinter.filedialog import askopenfilename
 import pandas as pd
 from sqlalchemy import create_engine
 from time import time
@@ -58,7 +58,7 @@ def upload_transcript(filepath=None):
         'password' : str,
         'host' : str,
         'database' : str
-    
+
     The excel sheet provided must contain the following columns:
         stud_id,
         stud_first,
@@ -75,18 +75,18 @@ def upload_transcript(filepath=None):
         instrctr_fist,
         instrctr_last,
         pre
-    
+
     :param filepath: relative or absolute path to the transcript xlsx
     """
 
     # If a file was not provided, use the gui selector
     if not filepath:
         print('\nPlease select a transcript file...')
-        filepath = askopenfilename(title='Select Transcript File', \
-                filetypes=(('Excel Files', '*.xlsx'), ('all files', '*.*')))
+        filepath = askopenfilename(title='Select Transcript File',
+                                   filetypes=(('Excel Files', '*.xlsx'), ('all files', '*.*')))
 
     print(f'\nUsing file: {filepath}\n')
-    
+
     start = time()
 
     progress(0, 6, "Pulling Data from Excel File                      ")
@@ -100,7 +100,7 @@ def upload_transcript(filepath=None):
         format(**db_credentials)
     )
     con = engine.connect()
-    
+
     progress(1, 6, "Processing Data                                   ")
 
     # Get students from excel sheet
@@ -109,19 +109,19 @@ def upload_transcript(filepath=None):
     student_df.columns = ['student_id', 'first_name', 'last_name']
 
     # Get instructors from excel sheet
-    instructor_df = sheet_df[['instrctr_id', 'last_pre_first_middle', 
-                              'instrctr_type', 'description', 'instrctr_last', 
+    instructor_df = sheet_df[['instrctr_id', 'last_pre_first_middle',
+                              'instrctr_type', 'description', 'instrctr_last',
                               'instrctr_first', 'pre']]
-    
+
     instructor_df = instructor_df.drop_duplicates(subset='instrctr_id')
 
     # Rename columns to match database
-    instructor_df.columns = ['instructor_id', 'last_pre_first_middle', 
-                             'instructor_type', 'description', 'last_name', 
+    instructor_df.columns = ['instructor_id', 'last_pre_first_middle',
+                             'instructor_type', 'description', 'last_name',
                              'first_name', 'pre']
 
     # Get courses from excel sheet
-    class_df = sheet_df[['instrctr_id', 'yr_cde', 'trm_cde', 'crs_cde', 
+    class_df = sheet_df[['instrctr_id', 'yr_cde', 'trm_cde', 'crs_cde',
                          'crs_div']]
 
     # Add class_id column
@@ -130,11 +130,12 @@ def upload_transcript(filepath=None):
     def course_id(row):
         """ Create course id out of row, needed for lambda """
         return str(row['yr_cde']) + '-' + str(row['trm_cde']) + '-' \
-               + row['crs_cde'].replace('  ', '-'). \
-               replace(' ', '') + '-' + row['crs_div']
+            + row['crs_cde'].replace('  ', '-'). \
+            replace(' ', '') + '-' + row['crs_div']
 
     # Set class ids
-    class_df.loc[:,'class_id'] = class_df.apply(lambda row: course_id(row), axis=1)
+    class_df.loc[:, 'class_id'] = class_df.apply(
+        lambda row: course_id(row), axis=1)
     class_df = class_df.drop_duplicates(subset='class_id')
 
     # Add priority column
@@ -142,20 +143,21 @@ def upload_transcript(filepath=None):
 
     # Add comp colum
     class_df.insert(7, 'comp_id', None)
-    
+
     # Rename columns to match database
     class_df.columns = ['class_id', 'instructor_id', 'yr_cde', 'trm_cde',
                         'crs_cde', 'crs_div', 'priority', 'comp_id']
 
     # Get transcript from excel sheet
-    transcript_df = sheet_df[['stud_id', 'yr_cde', 'trm_cde', 'crs_cde', 
+    transcript_df = sheet_df[['stud_id', 'yr_cde', 'trm_cde', 'crs_cde',
                               'crs_div', 'transaction_sts']]
-    
+
     # Add class_id column
     transcript_df.insert(1, 'class_id', '')
 
     # Set class ids
-    transcript_df.loc[:, 'class_id'] = transcript_df.apply(lambda row: course_id(row), axis=1)
+    transcript_df.loc[:, 'class_id'] = transcript_df.apply(
+        lambda row: course_id(row), axis=1)
 
     # Remove unneeded columns
     transcript_df = transcript_df.drop(
