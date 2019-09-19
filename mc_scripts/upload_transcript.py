@@ -83,7 +83,9 @@ def upload_transcript(filepath=None):
     if not filepath:
         print('\nPlease select a transcript file...')
         filepath = askopenfilename(title='Select Transcript File',
-                                   filetypes=(('Excel Files', '*.xlsx'), ('all files', '*.*')))
+                                   filetypes=(
+                                       ('Excel Files', '*.xlsx'),
+                                       ('all files', '*.*')))
 
     print(f'\nUsing file: {filepath}\n')
 

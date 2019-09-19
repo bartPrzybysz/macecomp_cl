@@ -12,14 +12,14 @@ else:
 
 data_sql = \
     """
-SELECT TRANSCRIPT.student_id, TRANSCRIPT.transaction_status, CLASS.class_id, 
+SELECT TRANSCRIPT.student_id, TRANSCRIPT.transaction_status, CLASS.class_id,
        CLASS.priority, CLASS.comp_id, COMP.grading_instructor
 FROM TRANSCRIPT
 LEFT JOIN CLASS ON CLASS.class_id=TRANSCRIPT.class_id
 LEFT JOIN COMP ON CLASS.comp_id = COMP.comp_id
 WHERE CLASS.comp_id IS NOT NULL
 AND TRANSCRIPT.student_id NOT IN (
-    SELECT student_id FROM 4Q    
+    SELECT student_id FROM 4Q
 )
 ORDER BY TRANSCRIPT.student_id
 """

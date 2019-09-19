@@ -10,6 +10,7 @@ autopep8 = "*"
 [packages]
 pandas = "*"
 sqlalchemy = "*"
+mysql-connector = "*"
 
 [requires]
 python_version = "3.7"

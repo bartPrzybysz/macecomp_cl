@@ -40,11 +40,15 @@ epilog = \
 """
 
 parser = argparse.ArgumentParser(
-    description=description, epilog=epilog, formatter_class=argparse.RawTextHelpFormatter)
+    description=description, epilog=epilog,
+    formatter_class=argparse.RawTextHelpFormatter
+)
 parser.add_argument('-a', '--action', metavar='Action', type=str,
-                    default='terminal', help='Action to be performed', choices=ACTIONS)
+                    default='terminal', help='Action to be performed',
+                    choices=ACTIONS)
 parser.add_argument('-f', '--file', metavar='Filepath', type=str,
-                    default=None, help='File path of file to be used for specified action')
+                    default=None,
+                    help='File path of file to be used for specified action')
 args = parser.parse_args()
 
 action = args.action
