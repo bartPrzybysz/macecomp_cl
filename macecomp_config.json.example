@@ -1,0 +1,13 @@
+{
+    "DATABASE": {
+        "host": "localhost",
+        "database": "macecomp_test",
+        "user": "root",
+        "password": ""
+    },
+    "REST": {
+        "url": "https://franciscan.blackboard.com",
+        "key": "Application Key",
+        "secret": "Secret"
+    }
+}

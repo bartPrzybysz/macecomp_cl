@@ -1,13 +1,14 @@
+from time import time
+
 import pandas as pd
 from sqlalchemy import create_engine
-from time import time
 
 # Relative imports behave differently based on wether this is run as
 # a part of the package or as a standalone script
 if __name__ == '__main__':
-    from utilities import db_credentials, progress
+    from utilities import CONFIG, progress
 else:
-    from .utilities import db_credentials, progress
+    from .utilities import CONFIG, progress
 
 
 data_sql = \
@@ -43,7 +44,7 @@ def assign_questions():
     # Connect to database
     engine = create_engine(
         'mysql+mysqlconnector://{user}:{password}@{host}/{database}'.
-        format(**db_credentials)
+        format(**CONFIG['DATABASE'])
     )
     con = engine.connect()
 

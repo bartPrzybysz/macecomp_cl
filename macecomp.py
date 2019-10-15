@@ -3,41 +3,13 @@ from sys import exit
 
 from mc_scripts import *
 
-ACTIONS = ['terminal', 'upload-transcript', 'assign-questions']
+ACTIONS = ['terminal', 'upload-transcript']
 
-description = \
-    """Scripts for administrating the MACE COMP system
+with open('doc/description.txt') as file:
+    description = file.read() 
 
-Actions include the following:
-1) upload-transcript
-2) assign-questions
-"""
-
-epilog = \
-    """
-1) upload-transcript
-    Action for uploading a transcript to the MaceComp database.
-
-    Requires a transcript excel file to be provided that contains the following columns:
-        stud_id                 - student id number
-        stud_first              - student first name
-        stud_last               - student last name
-        yr_cde                  - year the student took the class
-        trm_cde                 - two digit term code (example: "10")
-        crs_cde                 - course number (example: "THE-600")
-        transaction_sts         - transaction status character (example: "H")
-        crs_div                 - "GT" or "GA"
-        instrctr_id             - grading instructor id number
-        last_pre_first_middle   - instructor name (example: "Rice, Dr. Robert W.J.")
-        instrctr_type           - instructor type character (examples: "P", 8)
-        description             - description associated with instructor type (example: "Professor")
-        instrctr_fist           - grading instructors first name
-        instrctr_last           - grading instructors last name
-        pre                     - instructor title (examples: "Dr.", "Prof.")
-
-2) assign-questions
-    Action for assigning questions to eligible students
-"""
+with open('doc/epilog.txt') as file:
+    epilog = file.read()
 
 parser = argparse.ArgumentParser(
     description=description, epilog=epilog,

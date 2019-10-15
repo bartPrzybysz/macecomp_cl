@@ -3,22 +3,11 @@
 #
 
 import sys
+import json
 
-db_credentials = {'user': '', 'password': '',
-                  'host': 'localhost', 'database': 'macecomp'}
-
-
-def login(driver, username='', password=''):
-    """
-    Log in to blackboard with the provided webdriver
-    """
-    driver.get(
-        'https://franciscan.blackboard.com/fus.blackboard.com/webapps/login/?action=default_login')
-    driver.find_element_by_id('agree_button').click()
-    driver.maximize_window()
-    driver.find_element_by_id('user_id').send_keys(username)
-    driver.find_element_by_id('password').send_keys(password)
-    driver.find_element_by_id('entry-login').click()
+# Change the path to point to the proper config file
+with open('macecomp_config.json', 'r') as config_file:
+    CONFIG = json.load(config_file)
 
 
 # credit: https://gist.github.com/vladignatyev/06860ec2040cb497f0f3

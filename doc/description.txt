@@ -1,0 +1,5 @@
+Scripts for administrating the MACE COMP system
+
+Actions include the following:
+    upload-transcript
+    assign-questions
