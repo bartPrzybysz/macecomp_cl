@@ -24,9 +24,9 @@ def configure(file_path=None):
     if not file_path:
         pprint(CONFIG)
         return
-    
+
     with open(file_path) as new_config_file, \
-         open(f'{Path.home()}/macecomp_config.json', 'w+') as config_file:
+            open(f'{Path.home()}/macecomp_config.json', 'w+') as config_file:
         json.dump(json.load(new_config_file), config_file, indent=4)
 
 

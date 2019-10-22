@@ -168,7 +168,8 @@ def upload_transcript(filepath=None):
     progress(3, 6, "Uploading Instructor Data                         ")
 
     # Append to INSTRUCTOR table via temp table
-    instructor_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
+    instructor_df.to_sql('temp', con=db_engine,
+                         if_exists='replace', index=False)
     con.execute("INSERT IGNORE INTO INSTRUCTOR SELECT * FROM temp")
 
     progress(4, 6, "Uploading Course Data                             ")
@@ -182,7 +183,8 @@ def upload_transcript(filepath=None):
     progress(5, 6, "Uploading Transcript Data                         ")
 
     # Append to TRANSCRIPT table via temp table
-    transcript_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
+    transcript_df.to_sql('temp', con=db_engine,
+                         if_exists='replace', index=False)
     con.execute("INSERT IGNORE INTO TRANSCRIPT SELECT * FROM temp")
 
     con.execute("DROP TABLE temp")

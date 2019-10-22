@@ -42,7 +42,7 @@ def reroll(student_id=None):
 
     if not student_id:
         student_id = input('Please provide a student id: ')
-    
+
     priority_weights = {1: 0.4, 2: 0.6}
 
     con = db_engine.connect()
@@ -55,10 +55,10 @@ def reroll(student_id=None):
 
     # Double check
     if 'y' not in input(
-            f'Randomly assign new questions to {student_name}? (y/n): ' \
+            f'Randomly assign new questions to {student_name}? (y/n): '
             .lower()):
         return
-    
+
     print('')
 
     start = time()
