@@ -1,0 +1,11 @@
+assign-questions: assign questions to eligible students
+
+    Assign 8-10 study questions:
+        Step 1: Assign no more than 6 priority 2 questions
+        Step 2: Try to fill selection with priority 1
+        Step 3: Make sure selection is completely filled
+
+    Assign 4 exam questions:
+        Step 1: If selection has any priority 2 questions, make sure at least one is used
+        Step 2: Pick a random selection, unused prof if possible
+        Step 3: Try to fill remaining spots with priority 1, unused prof if possible

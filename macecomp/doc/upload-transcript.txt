@@ -1,5 +1,4 @@
-1) upload-transcript
-    Action for uploading a transcript to the MaceComp database.
+upload-transcript: upload a transcript to the MaceComp database.
 
     Requires a transcript excel file to be provided that contains the following columns:
         stud_id                 - student id number
@@ -17,9 +16,3 @@
         instrctr_fist           - grading instructors first name
         instrctr_last           - grading instructors last name
         pre                     - instructor title (examples: "Dr.", "Prof.")
-
-2) assign-questions
-    Action for assigning questions to eligible students
-
-
-Configuration: A macecomp_config.json must be located in the current directory

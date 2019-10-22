@@ -1,3 +1,7 @@
 __pycache__/
 .vscode/
 *config.json
+!macecomp/macecomp_config.json
+build/
+dist/
+*.egg-info

@@ -4,14 +4,13 @@ from time import time
 import warnings
 
 import pandas as pd
-from sqlalchemy import create_engine
 
 # Relative imports behave differently based on wether this is run as
 # a part of the package or as a standalone script
 if __name__ == '__main__':
-    from utilities import CONFIG, progress
+    from utils import progress, db_engine
 else:
-    from .utilities import CONFIG, progress
+    from .utils import progress, db_engine
 
 
 Tk().withdraw()  # No need for the full GUI
@@ -53,12 +52,7 @@ def upload_transcript(filepath=None):
     """
     Upload a transcript excel file to database
 
-    Requires utilities file to have a db_credentials dict that contains
-    the following values of following types:
-        'user' : str,
-        'password' : str,
-        'host' : str,
-        'database' : str
+    Requires a db connection
 
     The excel sheet provided must contain the following columns:
         stud_id,
@@ -97,12 +91,7 @@ def upload_transcript(filepath=None):
     # Get excel sheet
     sheet_df = pd.read_excel(filepath)
 
-    # Connect to database
-    engine = create_engine(
-        'mysql+mysqlconnector://{user}:{password}@{host}/{database}'.
-        format(**CONFIG['DATABASE'])
-    )
-    con = engine.connect()
+    con = db_engine.connect()
 
     progress(1, 6, "Processing Data                                   ")
 
@@ -173,19 +162,19 @@ def upload_transcript(filepath=None):
     progress(2, 6, "Uploading Student Data                            ")
 
     # Append to STUDENT table via temp table
-    student_df.to_sql('temp', con=engine, if_exists='replace', index=False)
+    student_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
     con.execute("INSERT IGNORE INTO STUDENT SELECT * FROM temp")
 
     progress(3, 6, "Uploading Instructor Data                         ")
 
     # Append to INSTRUCTOR table via temp table
-    instructor_df.to_sql('temp', con=engine, if_exists='replace', index=False)
+    instructor_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
     con.execute("INSERT IGNORE INTO INSTRUCTOR SELECT * FROM temp")
 
     progress(4, 6, "Uploading Course Data                             ")
 
     # Append to CLASS table via temp table
-    class_df.to_sql('temp', con=engine, if_exists='replace', index=False)
+    class_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
     con.execute("INSERT IGNORE INTO CLASS SELECT * FROM temp")
     for snip in priority_sql:
         con.execute(snip)
@@ -193,10 +182,12 @@ def upload_transcript(filepath=None):
     progress(5, 6, "Uploading Transcript Data                         ")
 
     # Append to TRANSCRIPT table via temp table
-    transcript_df.to_sql('temp', con=engine, if_exists='replace', index=False)
+    transcript_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
     con.execute("INSERT IGNORE INTO TRANSCRIPT SELECT * FROM temp")
 
     con.execute("DROP TABLE temp")
+
+    con.close()
 
     progress(6, 6, "All Done                                          ")
 

@@ -1,0 +1,19 @@
+config: view or change configuration
+
+    If no configuration file is provided, current configuration will be displayed
+
+    Provided configuration file must follow the template:
+
+        {
+            "DATABASE": {
+                "host": "database hostname here",
+                "database": "name of macecomp database here",
+                "user": "database username here",
+                "password": "username password here"
+            },
+            "REST": {
+                "url": "https://franciscan.blackboard.com",
+                "key": "Application Key (provided on BB REST registration)",
+                "secret": "Secret (Provided on BB REST registration)"
+            }
+        }

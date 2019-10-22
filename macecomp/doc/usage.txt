@@ -1,0 +1,10 @@
+Examples
+    
+    view command help:
+    macecomp upload-transcript -h
+
+    run command with no parameters:
+    macecomp assign-questions
+
+    run command with parameters:
+    macecomp upload-transcript transcript.xlsx

@@ -1,0 +1,4 @@
+Assign 4 random exam questions from study questions for an individual student.
+
+    Random selection weight is 0.4 for priority 1 questions and 
+    0.6 for priority 2 questions

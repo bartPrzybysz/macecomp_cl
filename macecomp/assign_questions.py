@@ -1,18 +1,16 @@
 from time import time
 
 import pandas as pd
-from sqlalchemy import create_engine
 
 # Relative imports behave differently based on wether this is run as
 # a part of the package or as a standalone script
 if __name__ == '__main__':
-    from utilities import CONFIG, progress
+    from utils import progress, db_engine
 else:
-    from .utilities import CONFIG, progress
+    from .utils import progress, db_engine
 
 
-data_sql = \
-    """
+data_sql = """
 SELECT TRANSCRIPT.student_id, TRANSCRIPT.transaction_status, CLASS.class_id,
        CLASS.priority, CLASS.comp_id, COMP.grading_instructor
 FROM TRANSCRIPT
@@ -23,7 +21,7 @@ AND TRANSCRIPT.student_id NOT IN (
     SELECT student_id FROM 4Q
 )
 ORDER BY TRANSCRIPT.student_id
-"""
+""".strip()
 
 
 def assign_questions():
@@ -31,29 +29,19 @@ def assign_questions():
     Assign 10 study and 4 exam questions to each student who qulifies
     for comps and has no questions assigned yet
 
-    Requires utilities file to have a db_credentials dict that contains
-    the following values of following types:
-        'user' : str,c
-        'password' : str,
-        'host' : str,
-        'database' : str
+    Requires a db connection
     """
 
     print('')
 
-    # Connect to database
-    engine = create_engine(
-        'mysql+mysqlconnector://{user}:{password}@{host}/{database}'.
-        format(**CONFIG['DATABASE'])
-    )
-    con = engine.connect()
+    con = db_engine.connect()
 
     start = time()
 
     progress(0, 1, 'Pulling Data From Database                        ')
 
     # Get data from database
-    data_df = pd.read_sql_query(data_sql, engine)
+    data_df = pd.read_sql_query(data_sql, db_engine)
 
     # Filter out students who have taken less than 8 classes
     data_df = data_df.groupby('student_id').filter(lambda x: len(x) >= 8)
@@ -293,14 +281,16 @@ def assign_questions():
     )
 
     # Append to 10Q table via temp table
-    tenq_df.to_sql('temp', con=engine, if_exists='replace', index=True)
+    tenq_df.to_sql('temp', con=db_engine, if_exists='replace', index=True)
     con.execute("INSERT IGNORE INTO 10Q SELECT * FROM temp")
 
     # Append to 4Q table via temp table
-    fourq_df.to_sql('temp', con=engine, if_exists='replace', index=True)
+    fourq_df.to_sql('temp', con=db_engine, if_exists='replace', index=True)
     con.execute("INSERT IGNORE INTO 4Q SELECT * FROM temp")
 
     con.execute("DROP TABLE temp")
+
+    con.close()
 
     progress(1, 1, 'All Done                                          ')
 
