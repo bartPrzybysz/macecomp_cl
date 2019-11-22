@@ -1,6 +1,4 @@
-'''
-Utilities for mc_scripts
-'''
+"""Utilities for macecomp package."""
 
 import sys
 import json
@@ -8,6 +6,7 @@ from pathlib import Path
 from pprint import pprint
 
 from sqlalchemy import create_engine
+from bbrest import BbRest
 
 with open(f'{Path.home()}/macecomp_config.json') as file:
     CONFIG = json.load(file)
@@ -19,8 +18,11 @@ db_engine = create_engine(
     format(**CONFIG['DATABASE'])
 )
 
+bb = BbRest(**CONFIG['REST'])
+
 
 def configure(file_path=None):
+    """Read or alter configuration file."""
     if not file_path:
         pprint(CONFIG)
         return
@@ -32,6 +34,7 @@ def configure(file_path=None):
 
 # credit: https://gist.github.com/vladignatyev/06860ec2040cb497f0f3
 def progress(count, total, status=''):
+    """Print progress bar."""
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))
 

@@ -26,12 +26,13 @@ ORDER BY TRANSCRIPT.student_id
 
 def assign_questions():
     """
-    Assign 10 study and 4 exam questions to each student who qulifies
-    for comps and has no questions assigned yet
+    Assign study questions.
 
-    Requires a db connection
+    10 study and 4 exam questions to each student who qulifies
+    for comps and has no questions assigned yet.
+
+    Requires a database connection
     """
-
     print('')
 
     con = db_engine.connect()
@@ -60,7 +61,7 @@ def assign_questions():
 
     task_counter = 1
 
-    # Iterate over individual stuennt transcripts
+    # Iterate over individual student transcripts
     for student_id, transcript in data_df.groupby('student_id'):
         progress(
             task_counter, student_count + 3,

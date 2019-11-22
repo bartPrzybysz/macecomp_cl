@@ -50,9 +50,9 @@ WHERE comp_id IS NULL;
 
 def upload_transcript(filepath=None):
     """
-    Upload a transcript excel file to database
+    Upload a transcript excel file to database.
 
-    Requires a db connection
+    Requires a database connection.
 
     The excel sheet provided must contain the following columns:
         stud_id,
@@ -71,9 +71,10 @@ def upload_transcript(filepath=None):
         instrctr_last,
         pre
 
-    :param filepath: relative or absolute path to the transcript xlsx
-    """
+    Parameters:
+    filepath (str): relative or absolute path to the transcript xlsx
 
+    """
     # If a file was not provided, use the gui selector
     if not filepath:
         print('\nPlease select a transcript file...')
@@ -120,7 +121,7 @@ def upload_transcript(filepath=None):
     class_df.insert(0, 'class_id', '')
 
     def course_id(row):
-        """ Create course id out of row, needed for lambda """
+        """Create course id out of row, needed for lambda."""
         return str(row['yr_cde']) + '-' + str(row['trm_cde']) + '-' \
             + row['crs_cde'].replace('  ', '-'). \
             replace(' ', '') + '-' + row['crs_div']
