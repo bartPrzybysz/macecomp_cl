@@ -1,6 +1,7 @@
 # macecomp
 
-A command line tool for managing the MACE COMP system
+A command line tool for managing the MACE COMP system.
+(For internal use at Franciscan University of Steubenville)
 
 ## Installation
 
