@@ -34,12 +34,18 @@ def calculate_grades(output_dir=None):
 
     all_data = list()
 
+    progress(0, 1, "Getting COMP organizations                        ")
+
     r = bb.GetCourses(params={'name': 'COMP Questions',
                               'organization': True,
                               'fields': 'id,courseId,name,organization'})
     organizations = r.json()['results']
 
-    for org in organizations:
+    total = len(organizations) + 2
+
+    for i, org in enumerate(organizations):
+        progress(i, total, "Getting grades from organizations         ")
+
         # Get Gradebook columns
         r = bb.GetGradeColumns(courseId=org['id'],
                                params={'fields': 'id,name'})
@@ -79,8 +85,12 @@ def calculate_grades(output_dir=None):
     data_df = pd.DataFrame(all_data)
     data_df.student_id = data_df.student_id.astype('int64')
 
+    progress(total-2, total, "Getting question assignments            ")
+
     # Fetch the 4Q table from the database
     fourq_df = pd.read_sql_table('4q', db_engine, index_col='student_id')
+
+    progress(total-1, total, "Calculating grade totals                ")
 
     # Merge 4Q to grade data
     merge_df = data_df.merge(fourq_df,
@@ -108,6 +118,8 @@ def calculate_grades(output_dir=None):
         result_df.loc[student_id, 'total'] = sum(g)
 
     result_df.to_csv(file_name)
+
+    progress(total, total, "All Done                                  ")
 
     end = time()
     print(f'\n\nProcess took {end - start} seconds\n')
