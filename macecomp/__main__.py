@@ -3,7 +3,8 @@ from pathlib import Path
 import pkg_resources
 import json
 
-from . import assign_questions, upload_transcript, reroll,  configure
+from . import (assign_questions, upload_transcript, reroll, configure,
+               calculate_grades)
 
 parser = argparse.ArgumentParser(
     description='Tool for managing the MACE COMP system.',
@@ -49,6 +50,16 @@ reroll_parser.add_argument(
     'student_id', nargs='?', default=None, type=int,
     help='A student id')
 
+calculate_grades_parser = subparsers.add_parser(
+    'calculate-grades',
+    description=pkg_resources.resource_string(
+        __name__, 'doc/calculate-grades.txt').decode('utf-8'),
+    formatter_class=argparse.RawDescriptionHelpFormatter)
+calculate_grades_parser.set_defaults(command='calculate-grades')
+calculate_grades_parser.add_argument(
+    'output_dir', nargs='?', default=None,
+    help='Path to directory where results should be saved')
+
 
 def main():
     args = parser.parse_args()
@@ -67,6 +78,8 @@ def main():
         assign_questions()
     elif args.command == 'reroll':
         reroll(args.student_id)
+    elif args.command == 'calculate-grades':
+        calculate_grades(args.output_dir)
     else:
         print('Command not found')
 

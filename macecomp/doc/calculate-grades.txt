@@ -1,0 +1,10 @@
+calculate-grades: Get grades of all students in the MacecComp database
+
+    Results will be stored in a csv file containing the following columns:
+        student_id - a student id
+        name - A first and last name
+        grade_1 - A grade received on one of the comp questions (or empty if no grade)
+        grade_2 - ...
+        grade_3 - ...
+        grade_4 - ...
+        total - Sum of grade_1, grade_2,... or empty if not all four questions have received a grade

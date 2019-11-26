@@ -19,6 +19,7 @@ setup(
         'pandas',
         'sqlalchemy',
         'mysql-connector',
-        'xlrd'
+        'xlrd',
+        'bbrest'
     ]
 )

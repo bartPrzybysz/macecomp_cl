@@ -33,11 +33,10 @@ WHERE student_id={student_id}
 
 def reroll(student_id=None):
     """
-    Randomly assign 4 new exam questions to a student
+    Randomly assign 4 new exam questions to a student.
 
-    Requires a db connection
+    Requires a database connection.
     """
-
     print('')
 
     if not student_id:
