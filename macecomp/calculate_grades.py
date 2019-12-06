@@ -88,7 +88,7 @@ def calculate_grades(output_dir=None):
     progress(total-2, total, "Getting question assignments            ")
 
     # Fetch the 4Q table from the database
-    fourq_df = pd.read_sql_table('4q', db_engine, index_col='student_id')
+    fourq_df = pd.read_sql_table('4Q', db_engine, index_col='student_id')
 
     progress(total-1, total, "Calculating grade totals                ")
 
