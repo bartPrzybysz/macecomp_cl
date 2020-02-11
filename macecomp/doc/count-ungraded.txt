@@ -1,0 +1,7 @@
+count-ungraded: Count the number of ungraded attempts in each graders' Organization
+
+    Results will be stored in a csv file containing the following columns:
+        organization - Name of organization
+        ungraded - number of ungraded submissions
+
+    Organizations with no ungraded attempts will not appear.

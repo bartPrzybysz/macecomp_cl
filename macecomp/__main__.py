@@ -4,7 +4,7 @@ import pkg_resources
 import json
 
 from . import (assign_questions, upload_transcript, reroll, configure,
-               calculate_grades)
+               calculate_grades, count_ungraded)
 
 parser = argparse.ArgumentParser(
     description='Tool for managing the MACE COMP system.',
@@ -60,6 +60,16 @@ calculate_grades_parser.add_argument(
     'output_dir', nargs='?', default=None,
     help='Path to directory where results should be saved')
 
+count_ungraded_parser = subparsers.add_parser(
+    'count-ungraded',
+    description=pkg_resources.resource_string(
+        __name__, 'doc/count-ungraded.txt').decode('utf-8'),
+    formatter_class=argparse.RawDescriptionHelpFormatter)
+count_ungraded_parser.set_defaults(command='count-ungraded')
+count_ungraded_parser.add_argument(
+    'output_dir', nargs='?', default=None,
+    help='Path to directory where results should be saved')
+
 
 def main():
     args = parser.parse_args()
@@ -69,6 +79,7 @@ def main():
         args.command = input(f'Please select a command: ')
         args.file = None
         args.student_id = None
+        args.output_dir = None
 
     if args.command == 'config':
         configure(args.file)
@@ -80,6 +91,8 @@ def main():
         reroll(args.student_id)
     elif args.command == 'calculate-grades':
         calculate_grades(args.output_dir)
+    elif args.command == 'count-ungraded':
+        count_ungraded(args.output_dir)
     else:
         print('Command not found')
 

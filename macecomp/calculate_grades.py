@@ -8,9 +8,9 @@ import pandas as pd
 # Relative imports behave differently based on wether this is run as
 # a part of the package or as a standalone script
 if __name__ == '__main__':
-    from utils import progress, bb, db_engine, progress
+    from utils import progress, bb, db_engine
 else:
-    from .utils import progress, bb, db_engine, progress
+    from .utils import progress, bb, db_engine
 
 
 Tk().withdraw()  # No need for the full GUI
