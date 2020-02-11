@@ -164,7 +164,7 @@ def upload_transcript(filepath=None):
 
     # Append to STUDENT table via temp table
     student_df.to_sql('temp', con=db_engine, if_exists='replace', index=False)
-    con.execute("INSERT IGNORE INTO STUDENT SELECT * FROM temp")
+    con.execute("INSERT IGNORE INTO STUDENT (`student_id`, `first_name`, `last_name`) SELECT * FROM temp")
 
     progress(3, 6, "Uploading Instructor Data                         ")
 
